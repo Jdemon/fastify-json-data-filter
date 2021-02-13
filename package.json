@@ -10,6 +10,7 @@
     "fastify": "^3.11.0",
     "fastify-cors": "^5.2.0",
     "flat": "^5.0.2",
+    "node-cache": "^5.1.2",
     "pino-pretty": "^4.5.0",
     "ramda": "^0.27.1"
   },
