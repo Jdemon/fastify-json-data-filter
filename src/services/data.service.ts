@@ -5,7 +5,7 @@ const unflatten = require("flat").unflatten;
 const flatten = require("flat");
 const url =
   process.env.DATA_URL ||
-  "https://raw.githubusercontent.com/Jdemon/fastify-thailand-provinces/main/resources/data.json";
+  "https://raw.githubusercontent.com/Jdemon/fastify-json-data-filter/main/resources/data.json";
 
 export class DataService {
   private dataMaster: any;
