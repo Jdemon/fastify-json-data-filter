@@ -10,6 +10,8 @@ jobs:
     executor: node
     steps:
       - checkout
+      - setup_remote_docker:
+          version: 18.06.0-ce
       - run:
           name: Install dependencies
           command: npm install && npm audit fix && npm cache clean --force
@@ -17,8 +19,8 @@ jobs:
           name: build
           command: yarn build
       - run:
-          name: start
-          command: yarn start
+          name: build docker image
+          command: docker:build:distroless
 
 workflows:
   version: 2.1
