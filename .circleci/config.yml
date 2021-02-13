@@ -16,6 +16,9 @@ jobs:
       - run:
           name: build
           command: yarn build
+      - run:
+          name: start
+          command: yarn start
 
 workflows:
   version: 2.1
