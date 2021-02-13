@@ -1,0 +1,29 @@
+FROM node:12 as builder
+
+LABEL version="1.0.0"
+LABEL description="json data filter"
+LABEL maintainer="Chaiwat K. <jayz.kmutt.mthcom@gmail.com>"
+
+WORKDIR /app
+
+# set default node env
+ENV NODE_ENV=production
+ENV NPM_CONFIG_LOGLEVEL=error
+
+# copy project definition/dependencies files, for better reuse of layers
+COPY package.json ./
+
+# install dependencies here, for better reuse of layers
+RUN npm install && npm audit fix
+
+# copy all sources in the container (exclusions in .dockerignore file)
+COPY ./dist .
+
+# release layer (the only one in the final image)
+FROM gcr.io/distroless/nodejs:12 AS release
+COPY --from=builder /app /app
+WORKDIR /app
+
+EXPOSE 5000
+
+CMD [ "./server" ]
