@@ -1,14 +1,16 @@
 import axios from "axios";
+import NodeCache from "node-cache";
 
 const R = require("ramda");
 const unflatten = require("flat").unflatten;
 const flatten = require("flat");
+const cacheTtl = process.env.CACHE_TTL || 600;
 const url =
   process.env.DATA_URL ||
   "https://raw.githubusercontent.com/Jdemon/fastify-json-data-filter/main/resources/data.json";
 
 export class DataService {
-  private dataMaster: any;
+  private dataCache = new NodeCache({ stdTTL: 180, checkperiod: 200 });
 
   constructor() {
     this.fetch(url);
@@ -28,7 +30,9 @@ export class DataService {
       transformed[k] = transformedData;
       transformedData = [];
     }
-    this.dataMaster = transformed;
+    const isSuccess = this.dataCache.set("data", transformed, cacheTtl);
+    console.info("Set Cache isSuccess:" + isSuccess);
+    return await this.dataCache.get("data");
   }
 
   public async download(urlFetch: string): Promise<any> {
@@ -47,8 +51,11 @@ export class DataService {
   }
 
   public async getData(route: string): Promise<any> {
-    const filterData = R.path([route], this.dataMaster);
-    return filterData;
+    let data = await this.dataCache.get("data");
+    if (data == undefined) {
+      data = await this.fetch(url);
+    }
+    return await R.path([route], data);
   }
 
   public async findByKey(key: string, data: any[]): Promise<any> {
