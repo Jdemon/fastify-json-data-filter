@@ -13,7 +13,7 @@ export default async function dataRoute(server: FastifyInstance) {
       req.log.error("Fetching Data " + e);
       res.code(500).send({
         status: "fail",
-        message: "System can't not download date url: " + querys.url,
+        message: "System can't download file | url: " + querys.url,
       });
     }
   });
