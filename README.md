@@ -38,7 +38,7 @@ Filter json data array
 
 ## Example API Doc
 
-## Sub Districts API [/subDistricts{?no}{?key}{?provinceKey}{?districtKey}{?translations.th.name}{?translations.en.name}{?postalCodes}{?q}] [GET]
+## Sub Districts API [/subDistricts{?no}{?key}{?provinceKey}{?districtKey}{?translations.th.name}{?translations.en.name}{?postalCodes}{?q}]
 
 ### GET DATA [GET]
 
