@@ -49,7 +49,7 @@ Filter json data array
     + translations.th.name: `ท่าแร้ง` (string, optional) - retrive data `translations.th.name` equal `ท่าแร้ง`.
     + translations.en.name: `Tha Raeng` (string, optional) - retrive data `translations.en.name` equal `Tha Raeng`.
     + postalCodes: `10220` (string, optional) - retrive data `postalCodes` equal `10220` in array.
-    + q: `Tha` (string, optional) - search all value contain `Tha` *___when use 'q' ignore another fields and this don't support in array value search___
+    + q: `Tha` (string, optional) - search all value contain `Tha` *___when use 'q' ignore another fields and don't support in array value search___
 
 + Response 200 (application/json)
 
