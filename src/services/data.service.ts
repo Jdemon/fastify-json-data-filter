@@ -66,27 +66,56 @@ export class DataService {
   }
 
   public async filter(query: any, data: any[]): Promise<any> {
-    if (!data) {
-      return;
-    }
+    if (!data) return;
 
     if (!query.q) {
-      if (query.no) query.no = +query.no;
-
-      if (query.postalCode) {
-        data = R.filter(
-          R.where({ postalCodes: R.includes(+query.postalCode) })
-        )(data);
-      } else {
-        data = R.filter(R.whereEq(query))(data);
-      }
+      data = await this.find(data, query);
     } else {
       const qFilter = (val: any) =>
         R.filter(R.compose(R.any(R.contains(val)), R.values));
-      data = qFilter(query.q)(data);
+      data = await qFilter(query.q)(data);
     }
 
     return await this.unflat(data);
+  }
+
+  private async find(data: any[], query: Record<string, any>): Promise<any> {
+    const baseData = data[0];
+    if (!baseData) {
+      return data;
+    }
+
+    for (let jsonKey in baseData) {
+      if (query[jsonKey]) {
+        const type = typeof baseData[jsonKey];
+        if (type === "object" && Array.isArray(baseData[jsonKey])) {
+          const typeInArray = typeof baseData[jsonKey][0];
+          let value = await this.convertType(typeInArray, query[jsonKey]);
+          delete query[jsonKey];
+          let queryArray: any = {};
+          queryArray[jsonKey] = R.includes(value);
+          console.log(query);
+          data = R.filter(R.where(queryArray))(data);
+        } else {
+          query[jsonKey] = await this.convertType(type, query[jsonKey]);
+        }
+      }
+    }
+    return await R.filter(R.whereEq(query))(data);
+  }
+
+  public async convertType(type: any, val: string): Promise<any> {
+    let convertVal: any;
+    if (type === "number") {
+      convertVal = Number(val);
+    } else if (type === "bigint") {
+      convertVal = BigInt(val);
+    } else if (type === "boolean") {
+      convertVal = val === "true";
+    } else {
+      convertVal = val;
+    }
+    return convertVal;
   }
 
   private async unflat(data: any[]) {
