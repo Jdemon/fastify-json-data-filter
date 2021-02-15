@@ -82,6 +82,20 @@ Filter json data array
 - `DATA_URL` :  **default [data](https://raw.githubusercontent.com/Jdemon/fastify-json-data-filter/main/resources/data.json)**
 - `CACHE_TTL` :  **default `600` -> 10 mins** ___*cache time out(seconds)___
 
+### Docker Build 
+
+Docker build Apline LTS
+
+``` shell
+yarn docker:build:alpine
+```
+
+Docker build Node 12 Distroless
+
+``` shell
+yarn docker:build:distroless
+```
+
 ## Reference
 
 - [Master Data](https://github.com/ThepExcel/download/blob/master/ThepExcel-Thailand-Tambon.xlsx)
